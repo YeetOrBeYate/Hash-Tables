@@ -113,20 +113,13 @@ class HashTable:
             # self.put(old_storage.index(x),x)
             self.storage[old_storage.index(x)] = x
         
-        print('knew storage', self.storage)
+        
 
 
 
 
-        # print("the cap",self.capacity)
 
 
-
-# yeet = HashTable(6)
-
-# print("before",yeet.storage)
-# yeet.put("poop", 91)
-# print('after', yeet.storage)
 
 
 if __name__ == "__main__":
