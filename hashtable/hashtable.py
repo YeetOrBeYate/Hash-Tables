@@ -89,6 +89,8 @@ class HashTable:
         index = self.hash_index(key)
         value = self.storage[index]
 
+        
+
         return value
 
 
@@ -99,6 +101,24 @@ class HashTable:
 
         Implement this.
         """
+
+        self.capacity *=2
+
+        old_storage = self.storage
+
+        self.storage = [None] * self.capacity
+
+        for x in old_storage:
+            # print("value to insert?",x, "index:", old_storage.index(x))
+            # self.put(old_storage.index(x),x)
+            self.storage[old_storage.index(x)] = x
+        
+        print('knew storage', self.storage)
+
+
+
+
+        # print("the cap",self.capacity)
 
 
 
