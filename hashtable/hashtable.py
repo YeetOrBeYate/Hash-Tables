@@ -51,7 +51,11 @@ class HashTable:
         between within the storage capacity of the hash table.
         """
         #return self.fnv1(key) % self.capacity
+
+
         return self.djb2(key) % self.capacity
+
+
 
     def put(self, key, value):
         """
@@ -109,18 +113,11 @@ class HashTable:
         self.storage = [None] * self.capacity
 
         for x in old_storage:
-            # print("value to insert?",x, "index:", old_storage.index(x))
+            print("value to insert?",x, "index:", old_storage.index(x))
             # self.put(old_storage.index(x),x)
             self.storage[old_storage.index(x)] = x
         
         
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     ht = HashTable(2)

@@ -36,6 +36,18 @@ def delete(key):
 
     index = hash_index(key)
     hash_table[index] = None
+
+
+    #notes
+
+    # put:
+    # scan forward from the hash until we find key, or None: put value there
+
+    # get:
+    # scan forward from the hash value untl we find either the key, or None :return that
+
+    # delete:
+    # scan forward from the hash value until we find either the key, or none: if we find the key mark it as deleted
     
 
 if __name__ == "__main__":
