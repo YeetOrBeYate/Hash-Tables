@@ -6,7 +6,13 @@ class HashTableEntry:
     def __init__(self, key, value):
         self.key = key
         self.value = value
+        #next is only for collisions
         self.next = None
+
+
+    def __repr__(self):
+        return f"{self.key}--{self.value}--next:{self.next}"
+
 
 
 class HashTable:
@@ -20,6 +26,7 @@ class HashTable:
     def __init__(self, capacity = 0):
         self.capacity = capacity
         self.storage = [None] * capacity
+
 
 
 
@@ -67,7 +74,16 @@ class HashTable:
         """
 
         index = self.hash_index(key)
-        self.storage[index] = value
+        node = HashTableEntry(key,value)
+
+        if self.storage[index] is not None:
+            for thing in self.storage:
+                if thing is None:
+                    thing = node
+                elif thing.key == key:
+                    thing.value = node.value
+        else:
+            self.storage[index] = node
 
 
     def delete(self, key):
@@ -80,7 +96,19 @@ class HashTable:
         """
 
         index = self.hash_index(key)
-        self.storage[index] = None
+        node = self.storage[index]
+        
+
+        if self.storage[index] is not None:
+            if node.key == key:
+                self.storage[index].key = None
+                return f"{self.storage[index].value} has been removed"
+            elif node.key == None:
+                print('this ran')
+                return f"{self.storage[index].value} has already been removed"
+        else:
+            self.storage[index] = None
+            return "node not there"
 
     def get(self, key):
         """
@@ -91,11 +119,17 @@ class HashTable:
         Implement this.
         """
         index = self.hash_index(key)
-        value = self.storage[index]
-
+        thing = self.storage[index]
+        if self.storage[index] is not None:
+            if thing.key == key:
+                return thing.value
+            else:
+                for thing in self.storage:
+                    if thing.key == key:
+                        return thing.value
         
-
-        return value
+        return None
+            
 
 
     def resize(self):
@@ -106,18 +140,49 @@ class HashTable:
         Implement this.
         """
 
-        self.capacity *=2
+        # self.capacity *=2
 
-        old_storage = self.storage
+        # old_storage = self.storage
 
-        self.storage = [None] * self.capacity
+        # self.storage = [None] * self.capacity
 
-        for x in old_storage:
-            print("value to insert?",x, "index:", old_storage.index(x))
-            # self.put(old_storage.index(x),x)
-            self.storage[old_storage.index(x)] = x
+        # for x in old_storage:
+        #     print("value to insert?",x, "index:", old_storage.index(x))
+        #     # self.put(old_storage.index(x),x)
+        #     self.storage[old_storage.index(x)] = x
         
-        
+# ht = HashTable(10)
+
+# ht.put("key-0", "val-0")
+# ht.put("key-1", "val-1")
+# ht.put("key-2", "val-2")
+# ht.put("key-3", "val-3")
+# ht.put("key-4", "val-4")
+# ht.put("key-5", "val-5")
+# ht.put("key-6", "val-6")
+# ht.put("key-7", "val-7")
+# ht.put("key-8", "val-8")
+# ht.put("key-9", "val-9")
+# ht.put("key-9", "val-9k")
+# ht.put("key-9", "val-9fake")
+
+# # print(ht.get("key-0"))
+# # print(ht.get("key-1"))
+# # print(ht.get("key-2"))
+# # print(ht.get("key-3"))
+# # print(ht.get("key-4"))
+# # print(ht.get("key-5"))
+# # print(ht.get("key-6"))
+# # print(ht.get("key-7"))
+# # print(ht.get("key-8"))
+# print(ht.get("key-9"))
+
+# print(ht.delete('key-9'))
+
+# print("run",ht.get('key-9'))
+
+
+
 
 if __name__ == "__main__":
     ht = HashTable(2)
