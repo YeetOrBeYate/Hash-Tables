@@ -74,16 +74,27 @@ class HashTable:
         """
 
         index = self.hash_index(key)
-        node = HashTableEntry(key,value)
+        new_node = HashTableEntry(key,value)
 
         if self.storage[index] is not None:
-            for thing in self.storage:
-                if thing is None:
-                    thing = node
-                elif thing.key == key:
-                    thing.value = node.value
+            node = self.storage[index]
+            if node.key == key:
+                node.value = value
+                return f"inserted new value:{value}"
+            else:
+                while node.next is not None:
+                    node = node.next
+                    if node.key == key:
+                        node.value = value
+                        return f"inserted new value:{value}"
+
+                node.next = new_node
+
+                return f"inserted new value:{value} in linked list"
+
         else:
-            self.storage[index] = node
+            self.storage[index] = new_node
+            return f"inserted value:{value} at beginning of list"
 
 
     def delete(self, key):
@@ -96,19 +107,20 @@ class HashTable:
         """
 
         index = self.hash_index(key)
-        node = self.storage[index]
-        
+       
 
         if self.storage[index] is not None:
-            if node.key == key:
-                self.storage[index].key = None
-                return f"{self.storage[index].value} has been removed"
-            elif node.key == None:
-                print('this ran')
-                return f"{self.storage[index].value} has already been removed"
-        else:
-            self.storage[index] = None
-            return "node not there"
+            node = self.storage[index]
+            if key == node.key:
+                node.key = None
+            else:
+                while node.next is not None:
+                    node = node.next
+
+                    if key == node.key:
+                        node.key = None
+                        
+        return None
 
     def get(self, key):
         """
@@ -119,15 +131,21 @@ class HashTable:
         Implement this.
         """
         index = self.hash_index(key)
-        thing = self.storage[index]
+       
+
         if self.storage[index] is not None:
-            if thing.key == key:
-                return thing.value
+            node = self.storage[index]
+            # print(f"initial node{node}")
+
+            if key == node.key:
+                return node.value
             else:
-                for thing in self.storage:
-                    if thing.key == key:
-                        return thing.value
-        
+                while node.next is not None:
+                    node = node.next
+                    # print(f'comparison{key}=={node.key}')
+                    if key == node.key:
+                        return node.value 
+                        
         return None
             
 
@@ -140,18 +158,7 @@ class HashTable:
         Implement this.
         """
 
-        # self.capacity *=2
-
-        # old_storage = self.storage
-
-        # self.storage = [None] * self.capacity
-
-        # for x in old_storage:
-        #     print("value to insert?",x, "index:", old_storage.index(x))
-        #     # self.put(old_storage.index(x),x)
-        #     self.storage[old_storage.index(x)] = x
-        
-# ht = HashTable(10)
+# ht = HashTable(8)
 
 # ht.put("key-0", "val-0")
 # ht.put("key-1", "val-1")
@@ -163,51 +170,36 @@ class HashTable:
 # ht.put("key-7", "val-7")
 # ht.put("key-8", "val-8")
 # ht.put("key-9", "val-9")
-# ht.put("key-9", "val-9k")
-# ht.put("key-9", "val-9fake")
 
-# # print(ht.get("key-0"))
-# # print(ht.get("key-1"))
-# # print(ht.get("key-2"))
-# # print(ht.get("key-3"))
-# # print(ht.get("key-4"))
-# # print(ht.get("key-5"))
-# # print(ht.get("key-6"))
-# # print(ht.get("key-7"))
-# # print(ht.get("key-8"))
-# print(ht.get("key-9"))
+# for g in ht.storage:
+#     print(g)
 
-# print(ht.delete('key-9'))
+# print("get:",ht.get("key-8"))
 
-# print("run",ht.get('key-9'))
+# if __name__ == "__main__":
+#     ht = HashTable(2)
 
+#     ht.put("line_1", "Tiny hash table")
+#     ht.put("line_2", "Filled beyond capacity")
+#     ht.put("line_3", "Linked list saves the day!")
 
+#     print("")
 
+#     # Test storing beyond capacity
+#     print(ht.get("line_1"))
+#     print(ht.get("line_2"))
+#     print(ht.get("line_3"))
 
-if __name__ == "__main__":
-    ht = HashTable(2)
+#     # Test resizing
+#     old_capacity = len(ht.storage)
+#     ht.resize()
+#     new_capacity = len(ht.storage)
 
-    ht.put("line_1", "Tiny hash table")
-    ht.put("line_2", "Filled beyond capacity")
-    ht.put("line_3", "Linked list saves the day!")
+#     print(f"\nResized from {old_capacity} to {new_capacity}.\n")
 
-    print("")
+#     # Test if data intact after resizing
+#     print(ht.get("line_1"))
+#     print(ht.get("line_2"))
+#     print(ht.get("line_3"))
 
-    # Test storing beyond capacity
-    print(ht.get("line_1"))
-    print(ht.get("line_2"))
-    print(ht.get("line_3"))
-
-    # Test resizing
-    old_capacity = len(ht.storage)
-    ht.resize()
-    new_capacity = len(ht.storage)
-
-    print(f"\nResized from {old_capacity} to {new_capacity}.\n")
-
-    # Test if data intact after resizing
-    print(ht.get("line_1"))
-    print(ht.get("line_2"))
-    print(ht.get("line_3"))
-
-    print("")
+#     print("")
