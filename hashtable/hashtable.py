@@ -158,48 +158,46 @@ class HashTable:
         Implement this.
         """
 
-# ht = HashTable(8)
+        old_storage = self.storage
 
-# ht.put("key-0", "val-0")
-# ht.put("key-1", "val-1")
-# ht.put("key-2", "val-2")
-# ht.put("key-3", "val-3")
-# ht.put("key-4", "val-4")
-# ht.put("key-5", "val-5")
-# ht.put("key-6", "val-6")
-# ht.put("key-7", "val-7")
-# ht.put("key-8", "val-8")
-# ht.put("key-9", "val-9")
+        self.capacity *=2
+        new_storage = [None] * self.capacity
+        self.storage = new_storage
 
-# for g in ht.storage:
-#     print(g)
+        for node in old_storage:
+            this_node = node
+            while this_node.next is not None:
+                this_node = this_node.next
+                self.put(this_node.key,this_node.value)
+            self.put(node.key,node.value)
 
-# print("get:",ht.get("key-8"))
 
-# if __name__ == "__main__":
-#     ht = HashTable(2)
 
-#     ht.put("line_1", "Tiny hash table")
-#     ht.put("line_2", "Filled beyond capacity")
-#     ht.put("line_3", "Linked list saves the day!")
 
-#     print("")
+if __name__ == "__main__":
+    ht = HashTable(2)
 
-#     # Test storing beyond capacity
-#     print(ht.get("line_1"))
-#     print(ht.get("line_2"))
-#     print(ht.get("line_3"))
+    ht.put("line_1", "Tiny hash table")
+    ht.put("line_2", "Filled beyond capacity")
+    ht.put("line_3", "Linked list saves the day!")
 
-#     # Test resizing
-#     old_capacity = len(ht.storage)
-#     ht.resize()
-#     new_capacity = len(ht.storage)
+    print("")
 
-#     print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+    # Test storing beyond capacity
+    print(ht.get("line_1"))
+    print(ht.get("line_2"))
+    print(ht.get("line_3"))
 
-#     # Test if data intact after resizing
-#     print(ht.get("line_1"))
-#     print(ht.get("line_2"))
-#     print(ht.get("line_3"))
+    # Test resizing
+    old_capacity = len(ht.storage)
+    ht.resize()
+    new_capacity = len(ht.storage)
 
-#     print("")
+    print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+
+    # Test if data intact after resizing
+    print(ht.get("line_1"))
+    print(ht.get("line_2"))
+    print(ht.get("line_3"))
+
+    print("")
